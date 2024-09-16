@@ -1,8 +1,10 @@
 # ansible-training
+```
 1. Установил машину с помощью Vagrant
 Проверил доступ по ssh 
+```
 Проверил конфигурацию
-
+```
 root@testvm:/home/Ansible# vagrant ssh-config
 Host nginx
   HostName 127.0.0.1
@@ -16,10 +18,12 @@ Host nginx
   LogLevel FATAL
   PubkeyAcceptedKeyTypes +ssh-rsa
   HostKeyAlgorithms +ssh-rsa
-
+```
+```
 Проверяем хост 
 ansible nginx -i staging/hosts -m ping
-
+```
+```
 root@testvm:/home/Ansible# ansible nginx -i staging/hosts -m ping
 The authenticity of host '[127.0.0.1]:2222 ([127.0.0.1]:2222)' can't be established.
 ED25519 key fingerprint is SHA256:CaQePAGRhKdAaVfqPEq7bJV8jGOUqRlo2RtFxyJnNF4.
@@ -33,14 +37,15 @@ nginx | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
-
+```
+```
 Создаем ansible.cfg чтобы каждый раз не вписывать пользователя
 [defaults]
 inventory = staging/hosts
 remote_user = vagrant
 host_key_checking = False
 retry_files_enabled = False
-
+```
 Смотрим файл
 
 [web]
