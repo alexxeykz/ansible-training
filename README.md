@@ -47,7 +47,7 @@ host_key_checking = False
 retry_files_enabled = False
 ```
 Смотрим файл
-
+```
 [web]
 nginx ansible_host=127.0.0.1 ansible_port=2222 ansible_private_key_file=.vagrant/machines/nginx/virtualbox/private_key
 
@@ -61,15 +61,15 @@ nginx | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
-
+```
 Проверяем ядро
-
+```
 root@testvm:/home/Ansible# ansible nginx -m command -a "uname -r"
 nginx | CHANGED | rc=0 >>
 5.15.0-92-generic
-
+```
 Проверяем сервис статуса firewalld
-
+```
 root@testvm:/home/Ansible# ansible nginx -m systemd -a name=firewalld
 nginx | SUCCESS => {
     "ansible_facts": {
@@ -105,9 +105,9 @@ nginx | SUCCESS => {
         "CanReload": "no",
         "CanStart": "no",
         "CanStop": "yes",
-
+```
 Далее создаем templates/nginx.conf.j2  Шаблон
-
+```
 # {{ ansible_managed }}
 events {
     worker_connections 1024;
@@ -123,9 +123,9 @@ http {
         }
     }
 }
-
+```
 Создаем playbook
-
+```
 ---
 - name: NGINX | Install and configure NGINX
   hosts: nginx
@@ -165,12 +165,15 @@ http {
       systemd:
         name: nginx
         state: reloaded
-
+```
 Проверяем на ошибки изапускаем
+```
 ansible-playbook --check nginx.yml
+```
 все норм
 
 Запускаем
+```
 root@testvm:/home/Ansible# ansible-playbook nginx.yml
 
 PLAY [NGINX | Install and configure NGINX] **************************************************************************************************************************************************************************************************
@@ -195,8 +198,9 @@ changed: [nginx]
 
 PLAY RECAP **********************************************************************************************************************************************************************************************************************************
 nginx                      : ok=6    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-
+```
 Просматриваем проброс на хосте
+```
 root@testvm:/home/Ansible/templates# vagrant ssh
 Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-92-generic x86_64)
 
@@ -241,7 +245,7 @@ Commercial support is available at
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
-
+```
 
 
 
